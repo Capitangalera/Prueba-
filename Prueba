@@ -1,43 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seguro?</title>
-<script>
-    let contadorSeguros = 1;
+const catImages = [
+  'https://cdn2.thecatapi.com/images/bj5.jpg',
+  'https://cdn2.thecatapi.com/images/MTg4ODAzNQ.jpg',
+  'https://cdn2.thecatapi.com/images/c0t.jpg',
+  'https://cdn2.thecatapi.com/images/d2o.jpg',
+  // Añade más URLs de imágenes de gatos reales aquí
+];
 
-    window.onbeforeunload = function() {
-        return "Seguro" + " seguro".repeat(contadorSeguros) + "?";
-    };
+function createCat() {
+  const cat = document.createElement('img');
+  cat.src = catImages[Math.floor(Math.random() * catImages.length)];
+  cat.style.position = 'absolute';
+  cat.style.left = Math.random() * window.innerWidth + 'px';
+  cat.style.top = Math.random() * window.innerHeight + 'px';
+  cat.style.width = '100px'; // Ajusta el tamaño de la imagen según sea necesario
+  cat.style.height = 'auto';
+  cat.style.transition = 'transform 3s linear';
+  document.getElementById('container').appendChild(cat);
 
-    function mostrarSeguro() {
-        if (confirm("Seguro" + " seguro".repeat(contadorSeguros) + "?")) {
-            contadorSeguros++;
-            mostrarSeguro();
-        }
-    }
+  // Mover el gato aleatoriamente
+  setInterval(() => {
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+    cat.style.transform = `translate(${x}px, ${y}px)`;
+  }, 3000);
+}
 
-    function iniciarTemporizador() {
-        let segundos = 5;
-        const temporizador = setInterval(function() {
-            segundos--;
-            if (segundos <= 0) {
-                clearInterval(temporizador);
-                const codigoIngresado = prompt("Ingresa el código:");
-                if (codigoIngresado !== "1111") {
-                    contadorSeguros = 1;
-                    mostrarSeguro();
-                }
-            }
-        }, 1000);
-    }
-
-    window.onload = iniciarTemporizador;
-</script>
-</head>
-<body>
-    <h1>Esta es una página web de prueba</h1>
-    <p>Se iniciará un temporizador de 5 segundos. Cuando llegue a cero, deberás ingresar el código "1111". Si fallas o intentas cerrar el navegador, entrarás en el bucle de seguridad.</p>
-</body>
-</html>
+// Crear gatos cada segundo
+setInterval(createCat, 1000);
