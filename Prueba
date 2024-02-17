@@ -12,16 +12,11 @@
   #countdown {
     font-size: 48px;
   }
-  #codeInput {
-    display: none;
-  }
 </style>
 </head>
 <body>
 
 <div id="countdown">5</div>
-<input type="text" id="codeInput" placeholder="Ingrese el código">
-<button id="submitButton" style="display: none;">Enviar</button>
 
 <script>
   var countdown = 5;
@@ -30,30 +25,22 @@
     document.getElementById("countdown").innerText = countdown;
     if (countdown === 0) {
       clearInterval(countdownInterval);
-      document.getElementById("codeInput").style.display = "block";
-      document.getElementById("submitButton").style.display = "block";
+      openCodePopup();
     }
   }, 1000);
   
-  document.getElementById("submitButton").addEventListener("click", function() {
-    var enteredCode = document.getElementById("codeInput").value;
-    if (enteredCode === "1234") {
-      alert("¡Código correcto! Puedes cerrar el navegador.");
-      // Permitir que el navegador se cierre después de ingresar el código correcto
-      window.onbeforeunload = null;
-    } else {
-      alert("Código incorrecto. Por favor, intenta nuevamente.");
-      // Evitar que el navegador se cierre después de ingresar el código incorrecto
-      window.onbeforeunload = function() {
-        return "No puedes cerrar la página hasta ingresar el código.";
-      };
+  function openCodePopup() {
+    var codeEntered = false;
+    while (!codeEntered) {
+      var enteredCode = prompt("Ingrese el código:");
+      if (enteredCode === "1234") {
+        alert("¡Código correcto!");
+        codeEntered = true;
+      } else {
+        alert("Código incorrecto. Por favor, intenta nuevamente.");
+      }
     }
-  });
-
-  // Evitar que el navegador se cierre mientras se espera el código
-  window.onbeforeunload = function() {
-    return "No puedes cerrar la página hasta ingresar el código.";
-  };
+  }
 </script>
 
 </body>
