@@ -3,45 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contador y código</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-  }
-  #countdown {
-    font-size: 48px;
-  }
-</style>
+<title>Seguro?</title>
+<script>
+    let contadorSeguros = 1;
+
+    window.onbeforeunload = function() {
+        return "Seguro?";
+    };
+
+    function mostrarSeguro() {
+        if (confirm("Seguro" + " ".repeat(contadorSeguros) + "?")) {
+            contadorSeguros++;
+            mostrarSeguro();
+        }
+    }
+</script>
 </head>
 <body>
-
-<div id="countdown">5</div>
-
-<script>
-  var countdown = 5;
-  var countdownInterval = setInterval(function() {
-    countdown--;
-    document.getElementById("countdown").innerText = countdown;
-    if (countdown === 0) {
-      clearInterval(countdownInterval);
-      openCodePopup();
-    }
-  }, 1000);
-  
-  function openCodePopup() {
-    var codeEntered = false;
-    while (!codeEntered) {
-      var enteredCode = prompt("Ingrese el código:");
-      if (enteredCode === "1234") {
-        alert("¡Código correcto!");
-        codeEntered = true;
-      } else {
-        alert("Código incorrecto. Por favor, intenta nuevamente.");
-      }
-    }
-  }
-</script>
-
+    <h1>Esta es una página web de prueba</h1>
+    <p>Cuando intentes cerrar el navegador, aparecerá una ventana emergente preguntando "Seguro?". Si seleccionas "Aceptar", aparecerá otra ventana emergente preguntando "Seguro?". Cada vez que confirmes, se añadirá un "seguro" más.</p>
+    <button onclick="mostrarSeguro()">Mostrar ventana emergente</button>
 </body>
 </html>
