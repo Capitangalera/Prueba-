@@ -3,53 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cat Gallery</title>
+  <title>Click the Cat</title>
   <style>
-    body, html {
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       margin: 0;
-      padding: 0;
-      overflow: hidden;
     }
 
-    #container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    img {
+      max-width: 100%;
+      height: auto;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div id="container"></div>
-
+  <img id="catImage" src="https://cdn2.thecatapi.com/images/bj5.jpg" alt="Cat Image" onclick="changeCatImage()">
+  
   <script>
-    function getRandomCatUrl() {
-      const catId = Math.floor(Math.random() * 1000); // Generar un ID de gato aleatorio
-      return `https://cataas.com/cat/${catId}`; // Construir la URL de la imagen del gato
+    let currentIndex = 0;
+    let catImages = [];
+
+    async function fetchCatImages() {
+      const response = await fetch('https://api.thecatapi.com/v1/images/search?limit=50'); // Obtener 50 imágenes de gatos
+      const data = await response.json();
+      catImages = data.map(cat => cat.url);
     }
 
-    function createCat() {
-      const cat = document.createElement('img');
-      cat.src = getRandomCatUrl(); // Obtener una URL de imagen de gato aleatoria
-      cat.style.position = 'absolute';
-      cat.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-      cat.style.top = Math.random() * (window.innerHeight - 100) + 'px';
-      cat.style.width = '100px'; // Ajusta el tamaño de la imagen según sea necesario
-      cat.style.height = 'auto';
-      cat.style.transition = 'transform 3s linear';
-      document.getElementById('container').appendChild(cat);
+    async function changeCatImage() {
+      if (catImages.length === 0) {
+        await fetchCatImages();
+      }
 
-      // Mover el gato aleatoriamente
-      setInterval(() => {
-        const x = Math.random() * (window.innerWidth - 100);
-        const y = Math.random() * (window.innerHeight - 100);
-        cat.style.transform = `translate(${x}px, ${y}px)`;
-      }, 3000);
+      const catImage = document.getElementById('catImage');
+      currentIndex = (currentIndex + 1) % catImages.length; // Incrementar índice, volver a 0 si alcanza el final
+      catImage.src = catImages[currentIndex];
     }
 
-    // Crear gatos cada segundo
-    setInterval(createCat, 1000);
+    // Cargar las imágenes de gatos al cargar la página por primera vez
+    fetchCatImages();
   </script>
 </body>
 </html>
