@@ -24,9 +24,14 @@
   <div id="container"></div>
 
   <script>
+    function getRandomCatUrl() {
+      const catId = Math.floor(Math.random() * 1000); // Generar un ID de gato aleatorio
+      return `https://cataas.com/cat/${catId}`; // Construir la URL de la imagen del gato
+    }
+
     function createCat() {
       const cat = document.createElement('img');
-      cat.src = 'https://cataas.com/cat'; // Esta es una URL que devuelve una imagen aleatoria de un gato cada vez que se solicita
+      cat.src = getRandomCatUrl(); // Obtener una URL de imagen de gato aleatoria
       cat.style.position = 'absolute';
       cat.style.left = Math.random() * (window.innerWidth - 100) + 'px';
       cat.style.top = Math.random() * (window.innerHeight - 100) + 'px';
