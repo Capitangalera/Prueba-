@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Click the Cat</title>
+  <title>Click the Image</title>
   <style>
     body {
       display: flex;
@@ -17,34 +17,49 @@
       max-width: 100%;
       height: auto;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent; /* Evita el resaltado azul al hacer clic en iOS */
     }
   </style>
 </head>
 <body>
-  <img id="catImage" src="https://cdn2.thecatapi.com/images/bj5.jpg" alt="Cat Image" onclick="changeCatImage()">
+  <img id="image" src="" alt="Image" onclick="changeImage()">
   
   <script>
     let currentIndex = 0;
-    let catImages = [];
+    let images = [];
 
-    async function fetchCatImages() {
-      const response = await fetch('https://api.thecatapi.com/v1/images/search?limit=50'); // Obtener 50 imágenes de gatos
-      const data = await response.json();
-      catImages = data.map(cat => cat.url);
-    }
-
-    async function changeCatImage() {
-      if (catImages.length === 0) {
-        await fetchCatImages();
+    async function fetchImages() {
+      try {
+        const response = await fetch('https://api.thecatapi.com/v1/images/search?limit=5'); // Obtener 5 imágenes de gatos
+        const catData = await response.json();
+        images.push(...catData.map(cat => cat.url));
+      } catch (error) {
+        console.error('Error fetching cat images:', error);
       }
 
-      const catImage = document.getElementById('catImage');
-      currentIndex = (currentIndex + 1) % catImages.length; // Incrementar índice, volver a 0 si alcanza el final
-      catImage.src = catImages[currentIndex];
+      try {
+        const response = await fetch('https://picsum.photos/v2/list?page=2&limit=5'); // Obtener 5 imágenes aleatorias
+        const data = await response.json();
+        images.push(...data.map(image => image.download_url));
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
     }
 
-    // Cargar las imágenes de gatos al cargar la página por primera vez
-    fetchCatImages();
+    function changeImage() {
+      if (images.length === 0) {
+        console.log('No images available. Fetching images...');
+        fetchImages().then(() => changeImage());
+        return;
+      }
+
+      const imageElement = document.getElementById('image');
+      currentIndex = (currentIndex + 1) % images.length;
+      imageElement.src = images[currentIndex];
+    }
+
+    // Cargar las imágenes al cargar la página por primera vez
+    fetchImages();
   </script>
 </body>
 </html>
