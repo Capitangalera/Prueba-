@@ -24,17 +24,9 @@
   <div id="container"></div>
 
   <script>
-    const catImages = [
-      'https://cdn2.thecatapi.com/images/bj5.jpg',
-      'https://cdn2.thecatapi.com/images/MTg4ODAzNQ.jpg',
-      'https://cdn2.thecatapi.com/images/c0t.jpg',
-      'https://cdn2.thecatapi.com/images/d2o.jpg',
-      // Agrega más URLs de imágenes de gatos reales aquí
-    ];
-
     function createCat() {
       const cat = document.createElement('img');
-      cat.src = catImages[Math.floor(Math.random() * catImages.length)];
+      cat.src = 'https://cataas.com/cat'; // Esta es una URL que devuelve una imagen aleatoria de un gato cada vez que se solicita
       cat.style.position = 'absolute';
       cat.style.left = Math.random() * (window.innerWidth - 100) + 'px';
       cat.style.top = Math.random() * (window.innerHeight - 100) + 'px';
