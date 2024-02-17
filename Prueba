@@ -8,20 +8,36 @@
     let contadorSeguros = 1;
 
     window.onbeforeunload = function() {
-        return "Seguro?";
+        return "Seguro" + " seguro".repeat(contadorSeguros) + "?";
     };
 
     function mostrarSeguro() {
-        if (confirm("Seguro" + " ".repeat(contadorSeguros) + "?")) {
+        if (confirm("Seguro" + " seguro".repeat(contadorSeguros) + "?")) {
             contadorSeguros++;
             mostrarSeguro();
         }
     }
+
+    function iniciarTemporizador() {
+        let segundos = 5;
+        const temporizador = setInterval(function() {
+            segundos--;
+            if (segundos <= 0) {
+                clearInterval(temporizador);
+                const codigoIngresado = prompt("Ingresa el código:");
+                if (codigoIngresado !== "1111") {
+                    contadorSeguros = 1;
+                    mostrarSeguro();
+                }
+            }
+        }, 1000);
+    }
+
+    window.onload = iniciarTemporizador;
 </script>
 </head>
 <body>
     <h1>Esta es una página web de prueba</h1>
-    <p>Cuando intentes cerrar el navegador, aparecerá una ventana emergente preguntando "Seguro?". Si seleccionas "Aceptar", aparecerá otra ventana emergente preguntando "Seguro?". Cada vez que confirmes, se añadirá un "seguro" más.</p>
-    <button onclick="mostrarSeguro()">Mostrar ventana emergente</button>
+    <p>Se iniciará un temporizador de 5 segundos. Cuando llegue a cero, deberás ingresar el código "1111". Si fallas o intentas cerrar el navegador, entrarás en el bucle de seguridad.</p>
 </body>
 </html>
