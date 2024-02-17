@@ -43,6 +43,10 @@
       window.onbeforeunload = null;
     } else {
       alert("Código incorrecto. Por favor, intenta nuevamente.");
+      // Evitar que el navegador se cierre después de ingresar el código incorrecto
+      window.onbeforeunload = function() {
+        return "No puedes cerrar la página hasta ingresar el código.";
+      };
     }
   });
 
